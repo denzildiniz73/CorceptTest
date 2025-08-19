@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --green: #027373;
+  --MidnightGreen: #075454;
+  --magicMint: #A7F2D7;
+  --lemonYellow: #F2E9BD;
+  --Buff: #F2D57E;
+  --popstar: #933D49;
+  --black: #000000;
+  --brown: #231D06;
+  --grey: #595959;
+  --white: #FFFFFF;
+  --font-ptSansPro: "PT Sans Pro", sans-serif; /* This font is missing need to get from client*/
+  --font-mundial: "mundial", sans-serif;
+  --font-nicholas: "nicholas", serif;
+  --font-ofelia: "ofelia-text", serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-green: var(--green);
+  --color-MidnightGreen: var(--MidnightGreen);
+  --color-magicMint: var(--magicMint);
+  --color-lemonYellow: var(--lemonYellow);
+  --color-Buff: var(--Buff);
+  --color-popstar: var(--popstar);
+  --color-black: var(--black);
+  --color-brown: var(--brown);
+  --color-grey: var(--grey);
+  --color-white: var(--white);
+  --font-ptSansPro: var(--font-ptSansPro);
+  --font-mundial: var(--font-mundial);
+  --font-nicholas: var(--font-nicholas);
+  --font-ofeliaText: var(--font-ofeliaText);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*{
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.blur-shadow {
+  text-shadow:
+  0px 0px 1px rgba(2, 115, 115, .8), 0px -1px 10px rgba(2, 115, 115, .6), 0 0 3px rgba(2, 115, 115, .4), 0 0 2px rgba(2, 115, 115, .2)
+}
+
+
+
+
+
