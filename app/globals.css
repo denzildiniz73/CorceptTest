@@ -5,12 +5,14 @@
   --MidnightGreen: #075454;
   --magicMint: #A7F2D7;
   --lemonYellow: #F2E9BD;
-  --Buff: #F2D57E;
+  --buff: #F2D57E;
   --popstar: #933D49;
   --black: #000000;
   --brown: #231D06;
   --grey: #595959;
   --white: #FFFFFF;
+  --linen: #EFEFE2;
+  --codGray: #1C1C1C;
   --font-ptSansPro: "PT Sans Pro", sans-serif; /* This font is missing need to get from client*/
   --font-mundial: "mundial", sans-serif;
   --font-nicholas: "nicholas", serif;
@@ -22,12 +24,14 @@
   --color-MidnightGreen: var(--MidnightGreen);
   --color-magicMint: var(--magicMint);
   --color-lemonYellow: var(--lemonYellow);
-  --color-Buff: var(--Buff);
+  --color-buff: var(--buff);
   --color-popstar: var(--popstar);
   --color-black: var(--black);
   --color-brown: var(--brown);
   --color-grey: var(--grey);
   --color-white: var(--white);
+  --color-linen: var(--linen);
+  --color-codGray: var(--codGray);
   --font-ptSansPro: var(--font-ptSansPro);
   --font-mundial: var(--font-mundial);
   --font-nicholas: var(--font-nicholas);

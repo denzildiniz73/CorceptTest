@@ -9,12 +9,12 @@ import logo from "@/public/images/IlluminateProcLogo.svg";
 
 const navItemsList = [
   {
-    title: "Understanding PROC",
-    href: "/understanding-proc",
+    title: "Understanding Recurrence",
+    href: "/understanding-recurrence",
   },
   {
-    title: "Living With PROC",
-    href: "/living-with-proc",
+    title: "Lifestyle Tips",
+    href: "/lifestyle-tips",
   },
   {
     title: "Support & Resources",
@@ -29,6 +29,7 @@ const navItemsList = [
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("");
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -38,10 +39,20 @@ const Header = () => {
       }
     };
 
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 0);
+    };
+
     setActiveLink(pathname);
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [pathname]);
 
   const toggleSidebar = () => {
@@ -57,7 +68,11 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed z-50 w-full max-w-[94%] xl:max-w-[1320px] flex items-center justify-between bg-[#ffffff99] bg-opacity-60 backdrop-blur-lg px-7 py-4 lg:py-2 left-0 right-0 mx-auto top-7 rounded-[40px] border border-white">
+      <header className={`fixed z-50 w-full max-w-[94%] xl:max-w-[1320px] flex items-center justify-between px-4 xl:px-7 py-4 lg:py-2 left-0 right-0 mx-auto top-7 rounded-[40px] border transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-[#ffffff99] backdrop-blur-lg bg-opacity-60 border-white' 
+          : 'bg-transparent border-transparent'
+      }`}>
         <div className="flex items-center">
           <Link href="/" className="lg:w-full h-full md:w-[243px] sm:w-[200px]">
             {/* LOGO */}
@@ -69,8 +84,8 @@ const Header = () => {
             />
           </Link>
         </div>
-        <div className="flex items-center justify-end gap-6 w-full max-w-[754px]">
-          <ul className={`hidden lg:flex gap-6 ${styles.navbarLinks}`}>
+        <div className="flex items-center justify-end gap-3 xl:gap-8 w-full max-w-[790px]">
+          <ul className={`hidden lg:flex gap-8 ${styles.navbarLinks}`}>
             {navItemsList.map((item, index) => (
               <li key={index}>
                 <Link
@@ -86,7 +101,7 @@ const Header = () => {
           <Link
             href="/stay-informed"
             onClick={() => handleLinkClick("/stay-informed")}
-            className="hidden sm:inline-block text-base text-white font-mundial font-bold bg-MidnightGreen rounded-[70px] pt-[10px] py-3 px-6 border border-white hover:border-white transition-all duration-300 hover:shadow-[0_-2px_9px_0_rgba(1,116,115,0.37)] sm:mr-4 lg:mr-0"
+            className="hidden sm:inline-block text-base text-white font-mundial font-bold bg-MidnightGreen rounded-[70px] pt-[10px] py-3 px-6 border border-white hover:border-white transition-all duration-300 sm:mr-4 lg:mr-0"
           >
             Stay Informed
           </Link>
