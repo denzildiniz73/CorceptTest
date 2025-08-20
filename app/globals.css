@@ -49,16 +49,18 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
-p {
-  margin: 0;
-  padding: 0;
-}
-
 .blur-shadow {
   text-shadow:
-  0px 0px 1px rgba(2, 115, 115, .8), 0px -1px 10px rgba(2, 115, 115, .6), 0 0 3px rgba(2, 115, 115, .4), 0 0 2px rgba(2, 115, 115, .2)
+  0px 0px 1px rgba(2, 115, 115, .8), 0px -1px 5px rgba(2, 115, 115, .6), 0 0 3px rgba(2, 115, 115, .4), 0 0 2px rgba(2, 115, 115, .2)
 }
 
+.subTitleGradient{
+  background: linear-gradient(118.87deg, #6DAC96 -30.92%, #116868 139.12%);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 
 
