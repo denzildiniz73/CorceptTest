@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import Image from "next/image";
-import logo from "@/public/images/IlluminateProcLogo.svg";
+import logo from "../../../public/images/IlluminateProcLogo.svg";
+import Button from "../Buttons/Button";
 
 const navItemsList = [
   {
@@ -98,13 +99,14 @@ const Header = () => {
               </li>
             ))}
           </ul>
-          <Link
+          {/* <Link
             href="/stay-informed"
             onClick={() => handleLinkClick("/stay-informed")}
             className="hidden sm:inline-block text-base text-white font-mundial font-bold bg-MidnightGreen rounded-[70px] pt-[10px] py-3 px-6 border border-white hover:border-white transition-all duration-300 sm:mr-4 lg:mr-0"
           >
             Stay Informed
-          </Link>
+          </Link> */}
+          <Button variant="primary" className="text-white text-base leading-0 font-bold text-center py-[12.5px] font-mundial border border-[rgba(255,255,255,0.75)]">Stay Informed</Button>
         </div>
 
         <button

@@ -1,13 +1,14 @@
-import Header from "@/app/components/Header/header";
+
+import Footer from "./components/Footer/footer";
+import Header from "./components/Header/header";
 import "./globals.css";
-import Footer from "@/app/components/Footer/footer";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://use.typekit.net" />
-
+        <link href="https://fonts.cdnfonts.com/css/pt-sans-pro" rel="stylesheet" />
         <link
           rel="preload"
           href="https://use.typekit.net/fzv0brk.css"
@@ -16,9 +17,7 @@ export default function RootLayout({ children }) {
         <link rel="stylesheet" href="https://use.typekit.net/fzv0brk.css" />
       </head>
       <body>
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );

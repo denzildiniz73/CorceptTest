@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/public/images/Corcept_logo.svg";
-import footerLogoRight from "@/public/images/corceptFooterLogo.svg";
+import Logo from "../../../public/images/Corcept_logo.svg";
+import footerLogoRight from "../../../public/images/corceptFooterLogo.svg";
 import styles from "./footer.module.css";
 import { usePathname } from "next/navigation";
 
