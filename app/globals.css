@@ -13,6 +13,7 @@
   --white: #FFFFFF;
   --linen: #EFEFE2;
   --codGray: #1C1C1C;
+  --pineGreen: #037879;
   --font-ptSansPro: "PT Sans Pro", sans-serif; /* This font is missing need to get from client*/
   --font-mundial: "mundial", sans-serif;
   --font-nicholas: "nicholas", serif;
@@ -32,6 +33,7 @@
   --color-white: var(--white);
   --color-linen: var(--linen);
   --color-codGray: var(--codGray);
+  --color-pineGreen: var(--pineGreen);
   --font-ptSansPro: var(--font-ptSansPro);
   --font-mundial: var(--font-mundial);
   --font-nicholas: var(--font-nicholas);
