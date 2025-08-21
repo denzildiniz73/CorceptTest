@@ -1,0 +1,69 @@
+/* Custom Swiper Styles */
+.specialist-swiper {
+  padding-bottom: 0;
+}
+
+.specialist-swiper .swiper-slide {
+  height: auto;
+}
+
+/* Custom Progress Bar Styling */
+.swiper-pagination-custom {
+  position: relative !important;
+  flex: 1 !important;
+  height: 4px !important;
+  background-color: rgba(3, 115, 115, 0.25) !important;
+  border-radius: 2px !important;
+  margin-top: 0 !important;
+  margin-right: 16px !important;
+}
+
+.swiper-pagination-custom .swiper-pagination-progressbar-fill {
+  background: rgba(3, 115, 115, 0.75) !important;
+  border-radius: 2px !important;
+  transition: width 0.3s ease !important;
+}
+
+/* Navigation container styling */
+.mt-8.relative.flex.items-center.gap-4 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  flex-direction: row !important;
+}
+
+/* Navigation buttons container */
+.flex.gap-2 {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Hide default swiper buttons */
+.specialist-swiper .swiper-button-next,
+.specialist-swiper .swiper-button-prev {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .specialist-swiper {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .specialist-swiper {
+    margin-right: 0;
+  }
+}
+
+/* Custom card hover effects */
+.specialist-swiper .swiper-slide > div {
+  transition: all 0.3s ease;
+}
+
+.specialist-swiper .swiper-slide > div:hover {
+  transform: translateY(-2px);
+}
