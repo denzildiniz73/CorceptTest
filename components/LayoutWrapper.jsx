@@ -4,7 +4,7 @@ import Footer from '@/components/Footer/footer'
 
 const LayoutWrapper = ({children}) => {
   return (
-    <div>
+    <div className='w-full'>
       <Header />
       {children}
       <Footer />
