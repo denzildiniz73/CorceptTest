@@ -1,0 +1,803 @@
+/* Share Your Story Page Styles */
+.share-story-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #027373, #075454);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mundial);
+}
+
+/* Header Styles */
+.story-header {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  margin: 20px;
+  padding: 15px 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.divider {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.page-title {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.close-button {
+  background: #C25968;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background: #933D49;
+}
+
+/* Progress Bar Styles */
+.progress-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+}
+
+.progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  right: 50px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.4);
+  z-index: 1;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #027373;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border: none;
+  opacity: 0.6;
+}
+
+.step-circle.active {
+  background: #C25968;
+  color: white;
+  opacity: 1;
+}
+
+.step-circle.completed {
+  background: #C25968;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 1;
+}
+
+.step-label {
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Progress bar states using single line */
+.progress-bar.step-1-2::before {
+  background: linear-gradient(90deg, #C25968 0%, #C25968 50%, rgba(255, 255, 255, 0.4) 50%);
+}
+
+.progress-bar.step-3-7::before {
+  background: linear-gradient(90deg, #C25968 0%, #C25968 75%, rgba(255, 255, 255, 0.4) 75%);
+}
+
+.progress-bar.step-8::before,
+.progress-bar.step-9::before {
+  background: #C25968;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 40px;
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 34px;
+  max-width: 800px;
+  width: 100%;
+  min-height: 562px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.step-title {
+  font-size: 36px;
+  color: #027373;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+/* Step 1 - Introduction */
+.recording-area {
+  background: #027373;
+  border-radius: 15px;
+  padding: 60px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.recording-placeholder {
+  color: white;
+  text-align: center;
+}
+
+.record-button {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.record-button:hover {
+  transform: scale(1.05);
+}
+
+.record-button span {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.record-circle {
+  width: 80px;
+  height: 80px;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.record-dot {
+  width: 40px;
+  height: 40px;
+  background: #C25968;
+  border-radius: 50%;
+}
+
+.recording-info {
+  color: white;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.tip-section {
+  color: #333;
+  line-height: 1.6;
+}
+
+.tip-section p {
+  margin-bottom: 5px;
+}
+
+.tip-link {
+  color: #027373;
+  text-decoration: underline;
+}
+
+/* Step 2 - Options */
+.options-container {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.option-card {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--Corcept-Dark-Green, #075454);
+  border-radius: 8px;
+  padding: 40px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.option-card:hover {
+  background: rgba(2, 115, 115, 0.15);
+  transform: translateY(-2px);
+}
+
+.option-card.selected {
+  background: #027373;
+  color: white;
+  border-color: #027373;
+}
+
+.option-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.option-card h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: inherit;
+}
+
+.option-card p {
+  font-size: 14px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* Step 3 - Permission Modal */
+.permission-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.permission-modal {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.permission-info {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: flex-start;
+}
+
+.permission-icon {
+  font-size: 24px;
+}
+
+.permission-info p {
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.modal-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.modal-btn.primary {
+  background: #027373;
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  background: #075454;
+}
+
+.modal-btn.secondary {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.modal-btn.secondary:hover {
+  background: #e5e5e5;
+}
+
+/* Step 4 - Quick Note */
+.note-content {
+  text-align: left;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+.note-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note-list li {
+  margin-bottom: 15px;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.note-list li::before {
+  content: "•";
+  color: #C25968;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Recording Interface */
+.recording-interface {
+  width: 100%;
+  max-width: 500px;
+}
+
+.recording-display {
+  background: #027373;
+  border-radius: 15px;
+  padding: 40px;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.recording-display h3 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.audio-visualization {
+  margin: 30px 0;
+}
+
+.waveform {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  height: 60px;
+}
+
+.wave-bar {
+  width: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  animation: wave 1s infinite ease-in-out;
+}
+
+@keyframes wave {
+  0%, 100% { height: 10px; }
+  50% { height: 40px; }
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #C25968;
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+.record-stop-btn {
+  background: none;
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 20px auto 0;
+}
+
+.stop-icon {
+  width: 20px;
+  height: 20px;
+  background: #C25968;
+  border-radius: 2px;
+}
+
+/* Preview Interface */
+.preview-interface {
+  width: 100%;
+  max-width: 500px;
+}
+
+.preview-display {
+  background: #027373;
+  border-radius: 15px;
+  padding: 40px;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.preview-display h3 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.audio-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.play-pause-btn {
+  background: none;
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Action Buttons */
+.step-actions, .recording-actions, .preview-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.continue-btn, .submit-btn {
+  background: #C25968;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 120px;
+}
+
+.continue-btn:hover, .submit-btn:hover {
+  background: #933D49;
+}
+
+.continue-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #027373;
+  border: 2px solid #027373;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 120px;
+}
+
+.secondary-btn:hover {
+  background: #027373;
+  color: white;
+}
+
+.upload-alternative {
+  margin-top: 20px;
+}
+
+.upload-alternative a {
+  color: #C25968;
+  text-decoration: underline;
+}
+
+/* Personal Details Form */
+.personal-details-form {
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #027373;
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h4 {
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radio-group.horizontal {
+  flex-direction: row;
+  gap: 30px;
+}
+
+.radio-option, .checkbox-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.radio-option input[type="radio"],
+.checkbox-option input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #027373;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkbox-option .checkmark {
+  border-radius: 4px;
+}
+
+.radio-option input[type="radio"]:checked + .checkmark,
+.checkbox-option input[type="checkbox"]:checked + .checkmark {
+  background: #027373;
+}
+
+.radio-option input[type="radio"]:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.checkbox-option input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.privacy-notice {
+  margin: 30px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.privacy-link {
+  color: #027373;
+  text-decoration: underline;
+}
+
+.form-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+/* Thank You Step */
+.thank-you {
+  text-align: center;
+}
+
+.thank-you-message {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+.final-action {
+  margin-top: 40px;
+}
+
+.back-home-link {
+  color: #C25968;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-home-link:hover {
+  color: #933D49;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content-card {
+    padding: 40px 30px;
+    margin: 20px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .options-container {
+    flex-direction: column;
+  }
+  
+  .radio-group.horizontal {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .step-title {
+    font-size: 28px;
+  }
+  
+  .progress-bar {
+    gap: 20px;
+  }
+  
+  .story-header {
+    margin: 10px;
+    padding: 12px 20px;
+  }
+  
+  .header-content {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-card {
+    padding: 30px 20px;
+  }
+  
+  .recording-area {
+    padding: 40px 20px;
+  }
+  
+  .step-actions, .recording-actions, .preview-actions, .form-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .continue-btn, .secondary-btn, .submit-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
