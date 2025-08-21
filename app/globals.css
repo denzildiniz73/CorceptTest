@@ -68,4 +68,16 @@
   padding: 0;
 }
 
+.customGlow::before{
+content: '';
+position: absolute;
+right: 2%;
+top: 26%;
+width: 313px;
+height: 178px;
+background-image: url(../public/images/home/quoteGlow.svg);
+background-repeat: no-repeat;
+background-size: cover;
+}
+
 
