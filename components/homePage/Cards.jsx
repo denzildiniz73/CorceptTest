@@ -9,8 +9,8 @@ const renderCrads = [
     title: <>~244,000</>,
     body: (
       <>
-        women are living with<br /> ovarian cancer in the United
-        <br /> States
+        women are living with<br /> ovarian cancer in the 
+        <br /> United States
       </>
     ),
   },
@@ -20,8 +20,8 @@ const renderCrads = [
     title: <>~21,000</>,
     body: (
       <>
-        women are diagnosed with<br /> ovarian cancer in the United
-        <br /> States each year
+        women are diagnosed <br /> with ovarian cancer in the 
+        <br /> United States each year
       </>
     ),
   },
@@ -33,7 +33,7 @@ const Cards = () => {
       {renderCrads.map((card) => (
         <div
           key={card.id}
-          className="flex flex-col justify-center items-center w-full min-w-[220px] lg:min-w-[500px] xl:min-w-[516px] h-full min-h-[200px] md:min-h-[334px] border border-white bg-white/65 backdrop-blur-[22.08px] p-4"
+          className="flex flex-col justify-center items-center w-full min-w-[220px] lg:min-w-[500px] xl:min-w-[516px] h-full min-h-[200px] md:min-h-[334px] border border-white bg-white/50 backdrop-blur-[4px] p-4"
         >
           {/* Icon */}
           <div className="w-[130px] h-[130px] mt-[19px]">

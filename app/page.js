@@ -3,11 +3,19 @@ import HeroSection from "@/components/HeroSection/Herosection";
 import LayoutWrapper from "@/components/LayoutWrapper";
 import Cards from "@/components/homePage/Cards"
 import homeTopBg from "@/public/images/home/homeTopBg.svg"
+import homeBgBottom from "@/public/images/home/homeBgBottom.svg"
 import Link from "next/link";
 import H1 from "@/components/Typography/H1";
 import P from "@/components/Typography/P";
 import IconFeatureBlock from "@/components/homePage/IconFeatureBlock";
-import {iconFeatureBlockContent} from "@/utils/home-page"
+import { iconFeatureBlockContent } from "@/utils/home-page"
+import IconWithText from "@/components/homePage/IconWithText";
+import Quote from "@/components/Quote";
+import H3 from "@/components/Typography/H3";
+import H4 from "@/components/Typography/H4";
+import Button from "@/components/Buttons/Button";
+import TwoColumnSection from "@/components/homePage/TwoColumnSection";
+
 
 export default function Home() {
   return (
@@ -15,20 +23,16 @@ export default function Home() {
       <main className="min-h-screen bg-linen overflow-hidden">
         <HeroSection />
         <div className="">
-          <div className="flex flex-col w-full relative pt-14">
-            <div className="absolute -right-2 -top-2">
-              <Image src={homeTopBg} alt="background" className="w-full h-full object-cover" />
+          <div className="flex flex-col w-full relative pt-14 mb-[132px]">
+            <div className="absolute -right-2 -top-2 pointer-events-none hidden lg:block">
+              <Image src={homeTopBg} alt="background" className="w-full h-full object-cover z-0 pointer-events-none" />
             </div>
-            <div className="flex flex-col max-w-[1095px] mx-auto px-5 lg:px-0 z-10">
-              <H1 className='text-center'>
+            <div className="flex flex-col max-w-[1095px] mx-auto px-3 lg:px-0 z-10">
+              <H1 className='text-center text-[60px]'>
                 You are not alone
               </H1>
               <Cards />
-              <div className="mt-8 max-w-[1067px] bg-white/65 backdrop-blur-[22.08px] border-white border mb-[132px] px-5">
-                <P className="font-ptSansPro font-semibold text-[22px] leading-6 text-green text-center py-4">
-                  Facing resistance to platinum-based chemotherapy is a<br /> challenging reality for many women with ovarian cancer
-                </P>
-              </div>
+              <IconWithText />
             </div>
             <div className="z-10 w-full">
               <IconFeatureBlock iconFeatureBlockContent={iconFeatureBlockContent[0]} />
@@ -36,16 +40,21 @@ export default function Home() {
           </div>
 
           {/* women image and glass section  */}
+          <div className="container">
+            <Quote />
+          </div>
 
-          <div className="flex flex-col w-full relative pt-14">
-            <div className="absolute -right-2 -top-2">
-              <Image src={homeTopBg} alt="background" className="w-full h-full object-cover" />
+          <div className="flex flex-col w-full relative my-[132px]">
+            <div className="absolute -left-2 -top-[41px] pointer-events-none hidden lg:block">
+              <Image src={homeBgBottom} alt="background" className="w-full h-full object-contain pointer-events-none" />
             </div>
-            <div className="flex flex-col max-w-[1095px] mx-auto px-5 lg:px-0 z-10">
+            <div className="flex flex-col max-w-[1095px] mx-auto px-3 lg:px-0 z-10">
             </div>
             <div className="z-10 w-full">
-              <IconFeatureBlock iconFeatureBlockContent={iconFeatureBlockContent[0]} />
+              <IconFeatureBlock iconFeatureBlockContent={iconFeatureBlockContent[1]} />
             </div>
+            {/* here  */}
+            <TwoColumnSection />
           </div>
         </div>
       </main>

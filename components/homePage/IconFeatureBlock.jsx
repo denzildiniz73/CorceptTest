@@ -1,5 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
+import H1 from '../Typography/H1'
+import H4 from '../Typography/H4'
+import P from '../Typography/P'
 
 const IconFeatureBlock = ({iconFeatureBlockContent}) => {
     const {
@@ -7,25 +10,34 @@ const IconFeatureBlock = ({iconFeatureBlockContent}) => {
     title,
     bodyTitle,
     desc,
+    desc2='',
+    titleSectionClasses='',
 } = iconFeatureBlockContent
     return (
         <div className="px-5 ">
-            <div className="max-w-[1062px] mx-auto flex flex-col md:flex-row gap-[153px] justify-start items-center">
-                <div className="flex gap-6 justify-center items-center">
+            <div className="max-w-[720px] lg:max-w-[1095px] mx-auto flex flex-col lg:flex-row gap-12 lg:gap-[153px] justify-start items-center">
+                <div className={`flex gap-6 w-full justify-start lg:justify-center items-center ${titleSectionClasses || ''}`}>
                     <div className="w-[86px] h-[86px]">
                         <Image src={icon} alt="Reserch Icon" className="w-full h-full object-cover" />
                     </div>
-                    <h3 className="text-green font-black text-6xl font-ptSansPro blur-shadow text-center">
+                    <H1>
                         {title}
-                    </h3>
+                    </H1>
                 </div>
-                <div className="flex flex-col justify-start items-center gap-7 max-w-[566px]">
-                    <h4 className="text-[35px] font-ptSansPro font-semibold text-green w-full">
+                <div className="flex flex-col justify-start items-center gap-7 max-w-[720px] lg:max-w-[599px]">
+                    <H4 className="text-[35px] font-ptSansPro font-semibold text-green w-full">
                         {bodyTitle}
-                    </h4>
-                    <p className="font-mundial font-light text-brown text-lg">
+                    </H4>
+                    <div>
+                        <P className="font-mundial font-light text-brown text-lg text-left">
                         {desc}
-                    </p>
+                    </P>
+                    {
+                        desc2 !== '' ? ( <P className="font-mundial font-light text-brown text-lg text-left pt-3">
+                        {desc2}
+                    </P>) : ''
+                    }
+                    </div>
                 </div>
             </div>
         </div>
