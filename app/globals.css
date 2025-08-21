@@ -7,6 +7,7 @@
   --lemonYellow: #F2E9BD;
   --buff: #F2D57E;
   --popstar: #933D49;
+  --popstar-light: #C25968;
   --black: #000000;
   --brown: #231D06;
   --grey: #595959;
@@ -26,6 +27,7 @@
   --color-lemonYellow: var(--lemonYellow);
   --color-buff: var(--buff);
   --color-popstar: var(--popstar);
+  --color-popstar-light: var(--popstar-light);
   --color-black: var(--black);
   --color-brown: var(--brown);
   --color-grey: var(--grey);
@@ -43,22 +45,16 @@
   scroll-behavior: smooth;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
-
-p {
-  margin: 0;
-  padding: 0;
-}
-
 .blur-shadow {
   text-shadow:
   0px 0px 1px rgba(2, 115, 115, .8), 0px -1px 10px rgba(2, 115, 115, .6), 0 0 3px rgba(2, 115, 115, .4), 0 0 2px rgba(2, 115, 115, .2)
 }
 
+.container {
+  max-width: 1095px;
+  margin: 0 auto;
+  padding: 0;
+}
 
 
 

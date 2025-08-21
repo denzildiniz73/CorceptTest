@@ -8,7 +8,7 @@ export const lifestyleTips = {
     Oncologists and care teams are intimately familiar and highly skilled in dealing with the challenges of platinum-resistant ovarian cancer. Your care team is there to provide guidance and support.
     </span>
     <span className="mb-[23px] inline-block">
-    Connecting with patient advocacy organizations, as well as other people with platinum-resistant ovarian cancer and their caregivers, can help create a strong support system beyond your immediate family and friends. Hearing the perspectives <strong>of others can have a significant impact on your future outlook.</strong>
+    Connecting with patient advocacy organizations, as well as other people with platinum-resistant ovarian cancer and their caregivers, can help create a strong support system beyond your immediate family and friends. <strong>Hearing the perspectives of others can have a significant impact on your future outlook.</strong>
     </span>
   </>
 }
