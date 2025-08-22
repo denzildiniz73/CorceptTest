@@ -1,21 +1,28 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import "@/app/share-your-story/share-your-story.css";
 
 export default function ShareYourStoryPage() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0); // 0 = OnPageLoad, 1 = Personal Details, 2 = Recording, 3 = Thank You
+  const [subStep, setSubStep] = useState(null); // For sub-states like 2.1, 2.2, etc.
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState(null);
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackTime, setPlaybackTime] = useState(0);
+  const [hasStoppedRecording, setHasStoppedRecording] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedFlower, setSelectedFlower] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [uploadError, setUploadError] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     attribution: "named",
-    relation: "patient",
+    relation: "",
     platinumResistant: "",
     consent: false,
     contactOptIn: false,
@@ -26,6 +33,32 @@ export default function ShareYourStoryPage() {
   const recordingIntervalRef = useRef(null);
   const playbackIntervalRef = useRef(null);
 
+  // Available tags for flower generation
+  const availableTags = [
+    "Strong", "Resilient", "Hopeful", "Brave", "Determined", "Inspiring", 
+    "Caring", "Peaceful", "Vibrant", "Gentle", "Fierce", "Graceful"
+  ];
+
+  // Available flowers (assuming these exist in /public/images/flowers/)
+  const availableFlowers = [
+    "rose.svg", "sunflower.svg", "lily.svg", "orchid.svg", "tulip.svg", 
+    "daisy.svg", "iris.svg", "peony.svg", "jasmine.svg", "lavender.svg"
+  ];
+
+  // Flower generation algorithm
+  const generateFlower = (tags) => {
+    if (tags.length === 0) return null;
+    const tagString = tags.sort().join('');
+    let hash = 0;
+    for (let i = 0; i < tagString.length; i++) {
+      const char = tagString.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    const index = Math.abs(hash) % availableFlowers.length;
+    return availableFlowers[index];
+  };
+
   // Save form data to localStorage
   useEffect(() => {
     localStorage.setItem("shareStoryFormData", JSON.stringify(formData));
@@ -35,40 +68,18 @@ export default function ShareYourStoryPage() {
   useEffect(() => {
     const savedData = localStorage.getItem("shareStoryFormData");
     if (savedData) {
-      setFormData(JSON.parse(savedData));
+      try {
+        const parsedData = JSON.parse(savedData);
+        setFormData(parsedData);
+      } catch (error) {
+        console.error("Error loading saved form data:", error);
+      }
     }
   }, []);
 
   const handleClose = () => {
+    // Navigate to home page
     window.location.href = "/";
-  };
-
-  const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 8));
-  };
-
-  const prevStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleFileUpload = () => {
-    // Handle file upload
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "audio/mp3,audio/wav";
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file && file.size <= 10 * 1024 * 1024) {
-        // 10MB limit
-        const url = URL.createObjectURL(file);
-        setAudioUrl(url);
-        setAudioBlob(file);
-        setCurrentStep(6); // Go to preview step
-      } else {
-        alert("File size must be under 10MB");
-      }
-    };
-    input.click();
   };
 
   const startRecording = async () => {
@@ -82,22 +93,22 @@ export default function ShareYourStoryPage() {
       };
 
       mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/wav" });
-        setAudioBlob(blob);
-        setAudioUrl(URL.createObjectURL(blob));
+        const audioBlob = new Blob(chunks, { type: "audio/wav" });
+        setAudioBlob(audioBlob);
+        setAudioUrl(URL.createObjectURL(audioBlob));
+        setHasStoppedRecording(true);
+        setSubStep("2.1.4"); // Go to preview
         stream.getTracks().forEach((track) => track.stop());
-        setCurrentStep(6); // Go to preview step
       };
 
       mediaRecorderRef.current.start();
       setIsRecording(true);
       setRecordingTime(0);
-      setCurrentStep(5); // Go to recording active step
+      setSubStep("2.1.3"); // Recording in progress
 
       recordingIntervalRef.current = setInterval(() => {
         setRecordingTime((prev) => {
           if (prev >= 90) {
-            // 1:30 max
             stopRecording();
             return 90;
           }
@@ -105,8 +116,8 @@ export default function ShareYourStoryPage() {
         });
       }, 1000);
     } catch (error) {
-      console.error("Error starting recording:", error);
-      alert("Error accessing microphone. Please check your permissions.");
+      console.error("Error accessing microphone:", error);
+      alert("Unable to access microphone. Please check your permissions.");
     }
   };
 
@@ -122,10 +133,15 @@ export default function ShareYourStoryPage() {
     if (audioRef.current) {
       audioRef.current.play();
       setIsPlaying(true);
+      setPlaybackTime(0);
 
       playbackIntervalRef.current = setInterval(() => {
         if (audioRef.current) {
           setPlaybackTime(audioRef.current.currentTime);
+          if (audioRef.current.ended) {
+            setIsPlaying(false);
+            clearInterval(playbackIntervalRef.current);
+          }
         }
       }, 100);
     }
@@ -145,20 +161,46 @@ export default function ShareYourStoryPage() {
     setRecordingTime(0);
     setPlaybackTime(0);
     setIsPlaying(false);
-    setCurrentStep(4);
+    setIsRecording(false);
+    setHasStoppedRecording(false);
+    setSubStep("2.1.2"); // Back to start recording
+    clearInterval(recordingIntervalRef.current);
+    clearInterval(playbackIntervalRef.current);
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('audio/')) {
+        setUploadError("Please select an audio file.");
+        setSubStep("2.2.2"); // Upload failed
+        return;
+      }
+
+      // Check file duration (this is a simplified check)
+      const audio = new Audio();
+      audio.src = URL.createObjectURL(file);
+      
+      audio.addEventListener('loadedmetadata', () => {
+        if (audio.duration > 90) {
+          setUploadError("Recording limit is 90 seconds");
+          setSubStep("2.2.2"); // Upload failed
+        } else {
+          setAudioBlob(file);
+          setAudioUrl(URL.createObjectURL(file));
+          setHasStoppedRecording(true);
+          setUploadError("");
+          setSubStep("2.2.3"); // Upload preview
+        }
+      });
+    }
   };
 
   const handleFormSubmit = () => {
-    if (!formData.name || !formData.email || !formData.consent) {
-      alert("Please fill in all required fields and accept the terms.");
-      return;
-    }
-
-    // Here you would typically submit to your backend
-    console.log("Form submitted:", formData);
-    console.log("Audio blob:", audioBlob);
-
-    setCurrentStep(8);
+    // Final form submission
+    console.log("Form submitted:", { formData, selectedTags, audioBlob });
+    setCurrentStep(3); // Go to thank you page
   };
 
   const formatTime = (seconds) => {
@@ -170,10 +212,23 @@ export default function ShareYourStoryPage() {
   };
 
   const getProgressBarClass = () => {
-    if (currentStep <= 2) return "step-1-2";
-    if (currentStep <= 6) return "step-3-7";
-    if (currentStep === 7) return "step-8";
-    return "step-9";
+    if (currentStep === 0) return "onpage-load"; // All white
+    if (currentStep === 1) return "step-1"; // First circle active, gradient to second
+    if (currentStep === 2 && !subStep) return "step-2"; // First circle complete, second active, gradient to third
+    if (currentStep === 2 && (subStep === "2.1.4" || subStep === "2.2.1" || subStep === "2.2.2" || subStep === "2.2.3")) {
+      return "step-2-preview"; // First and second complete, third active
+    }
+    return "step-3"; // All complete
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.name) errors.name = 'Name is required';
+    if (!formData.email) errors.email = 'Email is required';
+    if (!formData.consent) errors.consent = 'Consent is required';
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   return (
@@ -205,44 +260,44 @@ export default function ShareYourStoryPage() {
           <div className="progress-step">
             <div
               className={`step-circle ${
-                currentStep >= 3
+                currentStep >= 2
                   ? "completed"
                   : currentStep >= 1
                   ? "active"
                   : ""
               }`}
             >
-              {currentStep >= 3 ? "✓" : ""}
+              {currentStep >= 2 ? "✓" : ""}
             </div>
-            <span className="step-label">Getting started</span>
+            <span className="step-label">About you</span>
           </div>
           <div className="progress-step">
             <div
               className={`step-circle ${
-                currentStep >= 7
+                (currentStep === 2 && (subStep === "2.1.4" || subStep === "2.2.1" || subStep === "2.2.2" || subStep === "2.2.3")) || currentStep >= 3
                   ? "completed"
-                  : currentStep >= 3
+                  : currentStep >= 2
                   ? "active"
                   : ""
               }`}
             >
-              {currentStep >= 7 ? "✓" : ""}
+              {(currentStep === 2 && (subStep === "2.1.4" || subStep === "2.2.1" || subStep === "2.2.2" || subStep === "2.2.3")) || currentStep >= 3 ? "✓" : ""}
             </div>
             <span className="step-label">Share your story</span>
           </div>
           <div className="progress-step">
             <div
               className={`step-circle ${
-                currentStep >= 8
+                currentStep >= 3
                   ? "completed"
-                  : currentStep >= 7
+                  : (currentStep === 2 && (subStep === "2.1.4" || subStep === "2.2.1" || subStep === "2.2.2" || subStep === "2.2.3"))
                   ? "active"
                   : ""
               }`}
             >
-              {currentStep >= 8 ? "✓" : ""}
+              {currentStep >= 3 ? "✓" : ""}
             </div>
-            <span className="step-label">Personal details</span>
+            <span className="step-label">Submit Illumination</span>
           </div>
         </div>
       </div>
@@ -250,8 +305,8 @@ export default function ShareYourStoryPage() {
       {/* Main Content */}
       <div className="main-content">
         <div className="content-card">
-          {/* Step 1: Quick Note */}
-          {currentStep === 1 && (
+          {/* OnPageLoad: Initial State */}
+          {currentStep === 0 && (
             <div className="step-content">
               <h2 className="step-title">A quick note before you share</h2>
               <div className="note-content">
@@ -274,21 +329,21 @@ export default function ShareYourStoryPage() {
                 </ul>
               </div>
               <div className="step-actions">
-                <button className="continue-btn" onClick={nextStep}>
+                <button className="continue-btn" onClick={() => setCurrentStep(1)}>
                   Continue
                 </button>
               </div>
             </div>
           )}
 
-          {/* Step 2: Personal Details */}
-          {currentStep === 2 && (
+          {/* Step 1: Personal Details Form */}
+          {currentStep === 1 && (
             <div className="step-content">
               <h2 className="step-title">Tell us about yourself</h2>
               <form className="personal-details-form">
                 <div className="form-row">
                   <div className="form-group">
-                    <label>Name</label>
+                    <label>Name *</label>
                     <input
                       type="text"
                       value={formData.name}
@@ -299,10 +354,12 @@ export default function ShareYourStoryPage() {
                         }))
                       }
                       placeholder="Jane"
+                      className={formErrors.name ? 'error' : ''}
                     />
+                    {formErrors.name && <span className="error-message">{formErrors.name}</span>}
                   </div>
                   <div className="form-group">
-                    <label>Email</label>
+                    <label>Email *</label>
                     <input
                       type="email"
                       value={formData.email}
@@ -313,8 +370,48 @@ export default function ShareYourStoryPage() {
                         }))
                       }
                       placeholder="janedoe@email.com"
+                      className={formErrors.email ? 'error' : ''}
                     />
+                    {formErrors.email && <span className="error-message">{formErrors.email}</span>}
                   </div>
+                </div>
+
+                <div className="form-section">
+                  <h4>Describe Yourself to Generate a Unique Flower</h4>
+                  <p className="form-description">Select up to 3 tags that best describe you:</p>
+                  <div className="tags-container">
+                    {availableTags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        className={`tag-button ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                        onClick={() => {
+                          if (selectedTags.includes(tag)) {
+                            setSelectedTags(selectedTags.filter(t => t !== tag));
+                          } else if (selectedTags.length < 3) {
+                            setSelectedTags([...selectedTags, tag]);
+                          }
+                        }}
+                        disabled={!selectedTags.includes(tag) && selectedTags.length >= 3}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedTags.length > 0 && (
+                    <div className="flower-preview">
+                      <p>Your unique flower:</p>
+                      <div className="flower-display">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img 
+                          src={`/images/flowers/${generateFlower(selectedTags)}`} 
+                          alt="Your unique flower"
+                          onError={(e) => {e.target.style.display = 'none'}}
+                        />
+                        <span className="flower-name">{generateFlower(selectedTags)?.replace('.svg', '').replace(/([A-Z])/g, ' $1').trim()}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-section">
@@ -334,7 +431,7 @@ export default function ShareYourStoryPage() {
                         }
                       />
                       <span className="checkmark"></span>
-                      Yes, I'd like to use my name alongside my Illumination
+                      Yes, I&apos;d like to use my name alongside my Illumination
                     </label>
                     <label className="radio-option">
                       <input
@@ -350,7 +447,7 @@ export default function ShareYourStoryPage() {
                         }
                       />
                       <span className="checkmark"></span>
-                      No thanks, I'd prefer my Illumination to remain anonymous
+                      No thanks, I&apos;d prefer my Illumination to remain anonymous
                     </label>
                   </div>
                 </div>
@@ -396,7 +493,7 @@ export default function ShareYourStoryPage() {
                 <div className="form-section">
                   <h4>
                     Has a healthcare professional told you that your/your loved
-                    one's ovarian cancer has become platinum resistant?
+                    one&apos;s ovarian cancer has become platinum resistant?
                   </h4>
                   <div className="radio-group horizontal">
                     <label className="radio-option">
@@ -445,7 +542,7 @@ export default function ShareYourStoryPage() {
                         }
                       />
                       <span className="checkmark"></span>
-                      I'm not sure
+                      I&apos;m not sure
                     </label>
                   </div>
                 </div>
@@ -465,10 +562,11 @@ export default function ShareYourStoryPage() {
                     <span className="checkmark"></span>I confirm I am 18 years
                     or older, a US resident, and acknowledge that I hereby
                     consent and authorize Corcept Therapeutics to use my
-                    likeness in any digital media ("Audio") that I submitted
+                    likeness in any digital media (&quot;Audio&quot;) that I submitted
                     above and agree to the full terms and conditions of the
                     Audio Release.
                   </label>
+                  {formErrors.consent && <span className="error-message">{formErrors.consent}</span>}
                 </div>
 
                 <div className="form-section">
@@ -484,7 +582,7 @@ export default function ShareYourStoryPage() {
                       }
                     />
                     <span className="checkmark"></span>
-                    I'm interested in being contacted by Corcept for additional
+                    I&apos;m interested in being contacted by Corcept for additional
                     opportunities to share my story. (Optional)
                   </label>
                 </div>
@@ -498,230 +596,351 @@ export default function ShareYourStoryPage() {
                     </a>
                   </p>
                 </div>
+
                 <div className="form-actions">
                   <button
                     type="button"
                     className="secondary-btn"
-                    onClick={prevStep}
+                    onClick={() => setCurrentStep(0)}
                   >
                     Back
                   </button>
                   <button
                     type="button"
-                    className="continue-btn"
-                    onClick={nextStep}
+                    className="submit-btn"
+                    onClick={() => {
+                      if (validateForm()) {
+                        setCurrentStep(2);
+                      }
+                    }}
                   >
-                    Next
+                    Submit
                   </button>
                 </div>
               </form>
             </div>
           )}
 
-          {/* Step 3: Recording Options */}
-          {currentStep === 3 && (
+          {/* Step 2: Recording Options */}
+          {currentStep === 2 && !subStep && (
             <div className="step-content">
               <h2 className="step-title">Share your story</h2>
-              <div className="options-container">
-                <div className="option-card" onClick={() => setCurrentStep(4)}>
-                  <div className="option-icon">🎤</div>
-                  <h3>Record audio</h3>
-                  <p>You will be asked to grant microphone permissions.</p>
+              <p className="step-description">Choose how you&apos;d like to share your story with us:</p>
+              
+              <div className="recording-options">
+                <div 
+                  className="option-card"
+                  onClick={() => setSubStep("2.1.2")}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src="/images/Audio-recorder/Audio rercord state Default.svg" 
+                    alt="Record audio"
+                    className="option-svg"
+                  />
                 </div>
-                <div className="option-card" onClick={handleFileUpload}>
-                  <div className="option-icon">📁</div>
-                  <h3>Upload recording</h3>
-                  <p>
-                    Supported file types: MP3, WAV
-                    <br />
-                    Max file size: 10 MB
-                  </p>
-                </div>
+                
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileUpload}
+                  style={{ display: 'none' }}
+                  id="upload-option-file"
+                />
+                <label 
+                  htmlFor="upload-option-file"
+                  className="option-card"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src="/images/Audio-recorder/Audio Upload state Default.svg" 
+                    alt="Upload recording"
+                    className="option-svg"
+                  />
+                </label>
               </div>
-              <div className="tip-section">
-                <p>
-                  <strong>Tip:</strong> Speak slowly and clearly. Let your story
-                  resonate.
-                </p>
-                <p>
-                  For more tips,{" "}
-                  <a href="#" className="tip-link">
-                    click here.
-                  </a>
-                </p>
+              
+              <div className="recording-info">
+                <p><strong>Please note:</strong></p>
+                <ul>
+                  <li>Maximum recording length: 90 seconds</li>
+                  <li>Accepted file types: MP3, WAV, M4A</li>
+                  <li>We may need to access your microphone for recording</li>
+                </ul>
               </div>
             </div>
           )}
 
-          {/* Step 4: Click to Start Recording */}
-          {currentStep === 4 && (
+          {/* Step 2.1.2: Start Recording */}
+          {currentStep === 2 && subStep === "2.1.2" && (
             <div className="step-content">
               <h2 className="step-title">Share your story</h2>
-              <div className="recording-area">
-                <div className="recording-placeholder">
-                  <div className="record-button" onClick={startRecording}>
-                    <span>Click to start recording</span>
-                    <div className="record-circle">
-                      <div className="record-dot"></div>
-                    </div>
+              
+              <div className="recording-card">
+                <h3 className="recording-card-title">Click to start recording</h3>
+                <button className="record-start-btn" onClick={startRecording}>
+                  <div className="record-dot"></div>
+                </button>
+                <p className="max-length">Max length: 90 seconds</p>
+              </div>
+
+              <div className="recording-tip">
+                <p><strong>Tip:</strong> Speak slowly and clearly. Let your story resonate.</p>
+                <p>For more tips, <a href="#" className="tip-link">click here</a>.</p>
+              </div>
+
+              <p className="upload-alternative">
+                <a href="#" onClick={() => setSubStep(null)}>
+                  ← Back to options
+                </a>
+              </p>
+            </div>
+          )}
+
+          {/* Step 2.1.3: Recording in Progress */}
+          {currentStep === 2 && subStep === "2.1.3" && (
+            <div className="step-content">
+              <h2 className="step-title">Share your story</h2>
+              
+              <div className="recording-card active">
+                <h3 className="recording-card-title">Recording...</h3>
+                <div className="waveform-container">
+                  <div className="waveform">
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
+                    <div className="wave"></div>
                   </div>
                 </div>
-                <p className="recording-info">
-                  Max length: 1 minute 30 seconds
-                </p>
-              </div>
-              <div className="tip-section">
-                <p>
-                  <strong>Tip:</strong> Speak slowly and clearly. Let your story
-                  resonate.
-                </p>
-                <p>
-                  For more tips,{" "}
-                  <a href="#" className="tip-link">
-                    click here.
-                  </a>
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Step 5: Recording Active */}
-          {currentStep === 5 && (
-            <div className="step-content">
-              <h2 className="step-title">Share your story</h2>
-              <div className="recording-interface">
-                <div className="recording-display active">
-                  <h3>Recording...</h3>
-                  <div className="audio-visualization">
-                    <div className="waveform">
-                      {[...Array(20)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="wave-bar"
-                          style={{ animationDelay: `${i * 0.1}s` }}
-                        ></div>
-                      ))}
-                    </div>
+                <div className="recording-timeline">
+                  <div className="timeline-track">
+                    <div 
+                      className="timeline-progress recording" 
+                      style={{width: `${(recordingTime / 90) * 100}%`}}
+                    ></div>
                   </div>
                   <div className="time-display">
-                    <span>{formatTime(recordingTime)}</span>
-                    <div className="progress-track">
-                      <div
-                        className="progress-fill"
-                        style={{ width: `${(recordingTime / 90) * 100}%` }}
-                      ></div>
-                    </div>
-                    <span>01:30</span>
-                  </div>
-                  <button className="record-stop-btn" onClick={stopRecording}>
-                    <div className="stop-icon"></div>
-                  </button>
-                </div>
-                <div className="recording-actions">
-                  <div className="form-actions">
-                    <button className="secondary-btn" onClick={reRecord}>
-                      Rerecord
-                    </button>
-                    <button
-                      type="button"
-                      className="submit-btn"
-                      onClick={handleFormSubmit}
-                    >
-                      Submit
-                    </button>
+                    <span className="current-time">{formatTime(recordingTime)}</span>
+                    <span className="max-time">01:30</span>
                   </div>
                 </div>
-                <p className="upload-alternative">
-                  <a href="#" onClick={() => setCurrentStep(3)}>
-                    Upload a recording instead
-                  </a>
-                </p>
+                <button className="record-stop-btn" onClick={stopRecording}>
+                  <div className="stop-icon"></div>
+                </button>
               </div>
+
+              <div className="recording-actions">
+                <button className="secondary-btn" onClick={reRecord}>
+                  Re-record
+                </button>
+                <button
+                  type="button"
+                  className="submit-btn"
+                  onClick={handleFormSubmit}
+                  disabled={!hasStoppedRecording}
+                >
+                  Submit
+                </button>
+              </div>
+
+              <p className="upload-alternative">
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileUpload}
+                  style={{ display: 'none' }}
+                  id="audio-upload-direct"
+                />
+                <label htmlFor="audio-upload-direct" className="upload-link">
+                  Upload a recording instead ↓
+                </label>
+              </p>
             </div>
           )}
 
-          {/* Step 6: Preview Recording */}
-          {currentStep === 6 && audioUrl && (
+          {/* Step 2.1.4: Recording Preview */}
+          {currentStep === 2 && subStep === "2.1.4" && (
             <div className="step-content">
               <h2 className="step-title">Share your story</h2>
-              <div className="preview-interface">
-                <div className="preview-display">
-                  <h3>Preview Recording</h3>
-                  <div className="audio-player">
-                    <div className="time-display">
-                      <span>{formatTime(playbackTime)}</span>
-                      <div className="progress-track">
-                        <div
-                          className="progress-fill"
-                          style={{
-                            width: audioRef.current
-                              ? `${
-                                  (playbackTime /
-                                    (audioRef.current.duration || 90)) *
-                                  100
-                                }%`
-                              : "0%",
-                          }}
+              
+              <div className="recording-card preview">
+                <h3 className="recording-card-title">Preview recording</h3>
+                {audioUrl && (
+                  <>
+                    <audio ref={audioRef} src={audioUrl} />
+                    <div className="audio-timeline-container">
+                      <div className="audio-timeline">
+                        <div 
+                          className="timeline-progress" 
+                          style={{width: `${(playbackTime / (audioRef.current?.duration || 1)) * 100}%`}}
                         ></div>
                       </div>
-                      <span>01:30</span>
                     </div>
                     <button
-                      className="play-pause-btn"
+                      className="play-btn"
                       onClick={isPlaying ? pauseAudio : playAudio}
                     >
-                      {isPlaying ? "⏸️" : "▶️"}
+                      <div className="play-icon">{isPlaying ? "⏸" : "▶"}</div>
                     </button>
-                  </div>
-                </div>
-                <div className="preview-actions">
-                <div className="recording-actions">
-                  <div className="form-actions">
-                    <button className="secondary-btn" onClick={reRecord}>
-                      Rerecord
-                    </button>
-                    <button
-                      type="button"
-                      className="submit-btn"
-                      onClick={handleFormSubmit}
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-                </div>
-                <p className="upload-alternative">
-                  <a href="#" onClick={() => setCurrentStep(3)}>
-                    Upload a recording instead
-                  </a>
-                </p>
-
-                <audio
-                  ref={audioRef}
-                  src={audioUrl}
-                  onEnded={() => {
-                    setIsPlaying(false);
-                    setPlaybackTime(0);
-                    clearInterval(playbackIntervalRef.current);
-                  }}
-                />
+                  </>
+                )}
               </div>
+
+              <div className="recording-actions">
+                <button className="secondary-btn" onClick={reRecord}>
+                  Re-record
+                </button>
+                <button
+                  type="button"
+                  className="submit-btn active"
+                  onClick={handleFormSubmit}
+                  disabled={!hasStoppedRecording}
+                >
+                  Submit
+                </button>
+              </div>
+
+              <p className="upload-alternative">
+                <input
+                  type="file"
+                  accept="audio/*"
+                  onChange={handleFileUpload}
+                  style={{ display: 'none' }}
+                  id="audio-upload-direct-preview"
+                />
+                <label htmlFor="audio-upload-direct-preview" className="upload-link">
+                  Upload a recording instead ↓
+                </label>
+              </p>
             </div>
           )}
 
-          {/* Step 8: Thank You */}
-          {currentStep === 7 && (
-            <div className="step-content thank-you">
-              <h2 className="step-title">Thank you for sharing your story</h2>
-              <p className="thank-you-message">
-                Your words can have an impact on other women with
-                platinum-resistant ovarian cancer. We'll let you know if your
-                story has been chosen to be shared as an Illumination.
-              </p>
-              <div className="final-action">
-                <a href="/" className="back-home-link">
-                  Back to IlluminateHope →
+
+
+          {/* Step 2.2.2: Upload Failed */}
+          {currentStep === 2 && subStep === "2.2.2" && (
+            <div className="step-content">
+              <h2 className="step-title">Share your story</h2>
+              
+              <div className="recording-card error">
+                <h3 className="recording-card-title">Recording upload failed</h3>
+                <div className="error-message">
+                  <p>Recording limit is 90 seconds</p>
+                </div>
+                <div className="upload-area">
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleFileUpload}
+                    style={{ display: 'none' }}
+                    id="audio-upload-retry"
+                  />
+                  <label htmlFor="audio-upload-retry" className="upload-button retry">
+                    <div className="upload-icon">🔄</div>
+                    <span>Try Again</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="recording-tip">
+                <p><strong>Tip:</strong> Make sure your file is an audio file (MP3, WAV, M4A) and under 90 seconds.</p>
+              </div>
+
+              <div className="recording-actions">
+                <button className="secondary-btn" onClick={() => setSubStep(null)}>
+                  Back to options
+                </button>
+                <button
+                  type="button"
+                  className="submit-btn"
+                  onClick={handleFormSubmit}
+                  disabled={!hasStoppedRecording}
+                >
+                  Submit
+                </button>
+              </div>
+
+              <p className="upload-alternative">
+                <a href="#" className="upload-link" onClick={() => setSubStep("2.1.2")}>
+                  Record instead ↓
                 </a>
+              </p>
+            </div>
+          )}
+
+          {/* Step 2.2.3: Upload Preview */}
+          {currentStep === 2 && subStep === "2.2.3" && (
+            <div className="step-content">
+              <h2 className="step-title">Share your story</h2>
+              
+              <div className="recording-card preview">
+                <h3 className="recording-card-title">Preview recording</h3>
+                {audioUrl && (
+                  <>
+                    <audio ref={audioRef} src={audioUrl} />
+                    <div className="audio-timeline-container">
+                      <div className="audio-timeline">
+                        <div 
+                          className="timeline-progress" 
+                          style={{width: `${(playbackTime / (audioRef.current?.duration || 1)) * 100}%`}}
+                        ></div>
+                      </div>
+                    </div>
+                    <button
+                      className="play-btn"
+                      onClick={isPlaying ? pauseAudio : playAudio}
+                    >
+                      <div className="play-icon">{isPlaying ? "⏸" : "▶"}</div>
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div className="recording-actions">
+                <button className="secondary-btn" onClick={() => setSubStep("2.2.1")}>
+                  Re-upload
+                </button>
+                <button
+                  type="button"
+                  className="submit-btn active"
+                  onClick={handleFormSubmit}
+                  disabled={!hasStoppedRecording}
+                >
+                  Submit
+                </button>
+              </div>
+
+              <p className="upload-alternative">
+                <a href="#" className="upload-link" onClick={() => setSubStep("2.1.2")}>
+                  Record instead ↓
+                </a>
+              </p>
+            </div>
+          )}
+
+          {/* Step 3: Thank You */}
+          {currentStep === 3 && (
+            <div className="step-content">
+              <h2 className="step-title">Thank you for sharing your story!</h2>
+              <div className="thank-you-content">
+                <p>
+                  Your story has been submitted and will be reviewed by our team.
+                  We appreciate you taking the time to share your experience with us.
+                </p>
+                <p>
+                  Your voice matters and helps bring hope to others facing similar challenges.
+                </p>
+              </div>
+              <div className="step-actions">
+                <Link href="/" className="continue-btn">
+                  Back to IlluminateHope
+                </Link>
               </div>
             </div>
           )}
