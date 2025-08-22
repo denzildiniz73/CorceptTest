@@ -5,17 +5,18 @@ import P from '@/components/Typography/P'
 import Button from '@/components/Buttons/Button'
 import { IoIosArrowRoundForward } from 'react-icons/io'
 import GlassCard from '../GlassCard'
+import { cn } from '@/lib/utils'
 
-const IconWithDescriptionGradientBackground = ({data}) => {
+const  IconWithDescriptionGradientBackground = ({data, className}) => {
   return (
-    <GlassCard className='flex lg:flex-row flex-col justify-center items-center gap-[87px] lg:max-h-[290px] p-[46.5px_67px] flex-shrink-0'>
-      <div className='max-w-[130px] h-full flex items-center justify-center'>
+    <GlassCard className={cn('flex lg:flex-row flex-col justify-center lg:items-center items-start lg:gap-[87px] gap-[63px] lg:max-h-[290px] lg:p-[24px_67px] md:p-[42px_50px] p-[42px_24px] flex-shrink-0', className)}>
+      <div className='max-w-[130px] h-full flex items-center lg:justify-center justify-start'>
         <Image src={data.icon} alt={data.title} width={100} height={100} />
-      </div>
+      </div> 
       <div className='flex-1'>
-        <H4>{data.title}</H4>
+        <H4 className='text-green'>{data.title}</H4>
         <div className='mt-[22px]'>
-          <P className='text-start'>
+          <P className='text-start text-xl leading-[30px] text-[#1f1f1f]'>
           {data.description}
           </P>
         </div>

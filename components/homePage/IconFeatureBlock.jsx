@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import H1 from '../Typography/H1'
+import H2 from '../Typography/H2'
 import H4 from '../Typography/H4'
 import P from '../Typography/P'
 
@@ -20,9 +20,9 @@ const IconFeatureBlock = ({iconFeatureBlockContent}) => {
                     <div className="w-[86px] h-[86px]">
                         <Image src={icon} alt="Reserch Icon" className="w-full h-full object-cover" />
                     </div>
-                    <H1>
+                    <H2>
                         {title}
-                    </H1>
+                    </H2>
                 </div>
                 <div className="flex flex-col justify-start items-center gap-7 max-w-[720px] lg:max-w-[599px]">
                     <H4 className="text-[35px] font-ptSansPro font-semibold text-green w-full">
