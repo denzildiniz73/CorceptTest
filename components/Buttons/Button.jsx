@@ -49,6 +49,7 @@ const Button = React.forwardRef(({
   fullWidth, 
   children, 
   shadow,
+  loading, 
   ...props 
 }, ref) => {
   const content = (
@@ -59,7 +60,7 @@ const Button = React.forwardRef(({
 
   return (
     <button
-      className={cn(buttonVariants({ variant, fullWidth, shadow, className }))}
+      className={cn(buttonVariants({ variant, fullWidth, shadow, loading, className }))}
       ref={ref}
       disabled={props.disabled}
       {...props}

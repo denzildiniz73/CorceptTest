@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
     default: true
   }
 }, {
-  timestamps: true // Adds createdAt and updatedAt fields automatically
+  timestamps: true 
 });
 
 // Virtual for full name
