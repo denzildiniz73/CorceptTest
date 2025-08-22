@@ -13,7 +13,7 @@
   --brown: #231D06;
   --grey: #595959;
   --white: #FFFFFF;
-  --linen: #EFEFE2;
+  --linen: url('/public/images/pattern/noisy.svg');
   --codGray: #1C1C1C;
   --pineGreen: #037879;
   --font-ptSansPro: "PT Sans Pro", sans-serif; /* This font is missing need to get from client*/
