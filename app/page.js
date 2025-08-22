@@ -15,10 +15,6 @@ import H3 from "@/components/Typography/H3";
 import H4 from "@/components/Typography/H4";
 import Button from "@/components/Buttons/Button";
 import TwoColumnSection from "@/components/homePage/TwoColumnSection";
-// import joyceBg from "@/public/images/home/Images/joyceBg.png"
-// import joyceScale from "@/public/images/home/Images/joyceScale.png"
-// import quoteDesktop from "@/public/images/home/quoteDesktop.svg"
-// import quoteGlow from "@/public/images/home/quoteGlow.svg"
 import QuoteSection from "@/components/homePage/QuoteSection";
 
 
@@ -46,7 +42,7 @@ export default function Home() {
 
          <QuoteSection />
 
-          <div className="flex flex-col w-full relative my-[132px]">
+          <div className="flex flex-col w-full relative my-[120px]">
             <div className="absolute -left-2 -top-[41px] pointer-events-none hidden lg:block">
               <Image src={homeBgBottom} alt="background" className="w-full h-full object-contain pointer-events-none" />
             </div>
@@ -57,6 +53,22 @@ export default function Home() {
             </div>
             <TwoColumnSection />
           </div>
+
+          <div className="flex flex-col w-full relative pt-14 mb-[132px]">
+            <div className="absolute -right-2 -top-2 pointer-events-none hidden lg:block">
+              <Image src={homeTopBg} alt="background" className="w-full h-full object-cover z-0 pointer-events-none" />
+            </div>
+            <div className="flex flex-col max-w-[1095px] mx-auto px-3 lg:px-0 z-10">
+              <H1 className='text-center text-[60px]'>
+                You are not alone
+              </H1>
+             
+            </div>
+          </div>
+
+
+
+
         </div>
       </main>
     </LayoutWrapper>

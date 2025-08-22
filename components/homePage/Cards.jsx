@@ -1,11 +1,11 @@
 import Image from "next/image";
-import girlIcon from "@/public/images/home/girlIcon.svg";
-import calendarIcon from "@/public/images/home/calendarIcon.svg";
+import women from "@/public/images/icons/women.svg";
+import diagnosed from "@/public/images/icons/diagnosed.svg";
 
 const renderCrads = [
   {
     id: 1,
-    icon: girlIcon,
+    icon: women,
     title: <>~244,000</>,
     body: (
       <>
@@ -16,7 +16,7 @@ const renderCrads = [
   },
   {
     id: 2,
-    icon: calendarIcon,
+    icon: diagnosed,
     title: <>~21,000</>,
     body: (
       <>

@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import P from "../Typography/P";
-import peopleIcon from "@/public/images/home/peopleIcon.svg"
+import people from "@/public/images/icons/people.svg"
 
 const IconWithText = () => {
   return (
@@ -9,7 +9,7 @@ const IconWithText = () => {
       <div className="flex flex-col md:flex-row gap-8 justify-center items-center px-6 md:px-10 py-4">
         <div className="w-[130px] h-[130px]">
           <Image
-            src={peopleIcon}
+            src={people}
             alt="People icon"
             className="w-full h-full object-cover"
           />

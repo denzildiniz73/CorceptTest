@@ -1,5 +1,5 @@
-import reserchIcon from "@/public/images/home/reserchIcon.svg"
-import personIcon from "@/public/images/home/personIcon.svg"
+import reserchIcon from "@/public/images/icons/reserchIcon.svg"
+import person from "@/public/images/icons/person.svg"
 import Link from "next/link"
 
 export const iconFeatureBlockContent = [
@@ -13,7 +13,7 @@ export const iconFeatureBlockContent = [
         </>
     },
     {
-        icon: personIcon,
+        icon: person,
         title: <>Path<br /> forward</>,
         bodyTitle:
             <>You don’t have to face chemotherapy<br /> resistance by yourself</>,
