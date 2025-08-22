@@ -10,6 +10,7 @@
   --popstar-light: #C25968;
   --rouge: #9C3971;
   --black: #000000;
+  --corceptBlack: #1F1F1F;
   --brown: #231D06;
   --grey: #595959;
   --white: #FFFFFF;
@@ -32,6 +33,7 @@
   --color-popstar-light: var(--popstar-light);
    --color-rouge: var(--rouge);
   --color-black: var(--black);
+  --color-corceptBlack: var(--corceptBlack);
   --color-brown: var(--brown);
   --color-grey: var(--grey);
   --color-white: var(--white);
@@ -101,4 +103,16 @@ background-size: cover;
     flex-direction: column;
     gap: 48px;
   }
+}
+
+.noiseOverlay{
+  width: 100%;
+  height: 100%;
+  background-image: url(../public/images/icons/noisy.svg);
+  background-size: cover;
+  background-repeat: repeat;
+  /* pointer-events: none; */
+  /* cursor: none; */
+  position: relative;
+  z-index: 49;
 }
