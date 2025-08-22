@@ -1,6 +1,5 @@
 import React from 'react'
-import H1 from "@/components/Typography/H1";
-import H3 from "@/components/Typography/H3";
+import H2 from "@/components/Typography/H2";
 import H4 from "@/components/Typography/H4";
 import P from '../Typography/P';
 import Link from 'next/link';
@@ -8,9 +7,9 @@ import Link from 'next/link';
 const TwoColumnSection = () => {
     return (
         <div className="flex flex-col gap-14 max-w-[1095px] mx-auto px-3 lg:px-0 z-10 mt-[132px] ">
-            <H1 className='text-center text-[60px]'>
+            <H2 className='text-center text-[60px]'>
                 Illuminations from women like you
-            </H1>
+            </H2>
             <div className="flex flex-col lg:flex-row w-full justify-between items-center gap-[65px]">
                 <div className="w-[528px] h-[444px] bg-green order-1 lg:order-2 hidden lg:block">
                 </div>
