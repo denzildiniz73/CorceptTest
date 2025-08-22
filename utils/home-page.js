@@ -1,6 +1,10 @@
 import reserchIcon from "@/public/images/icons/reserchIcon.svg"
 import person from "@/public/images/icons/person.svg"
 import Link from "next/link"
+import silence from "@/public/images/icons/silence.svg"
+import daily_life from "@/public/images/icons/daily_life.svg"
+import resources from "@/public/images/icons/resources.svg"
+import newsletter from "@/public/images/icons/newsletter.svg"
 
 export const iconFeatureBlockContent = [
     {
@@ -26,4 +30,41 @@ export const iconFeatureBlockContent = [
         </>,
         titleSectionClasses: 'mb-0 lg:mb-[89px]'
     },
+]
+
+
+export const animatedCardsData = [
+    {
+        id:1,
+        icon: silence,
+        title: 'Break the silence',
+        desc: 'There is power in understanding why treatment may no longer work.',
+        ctaText: 'Learn about chemotherapy resistance',
+        ctaLink: '#'
+    },
+    {
+        id:2,
+        icon: daily_life,
+        title: 'Daily life after recurrence',
+        desc: 'Learn about navigating the ups and downs of platinum-resistant ovarian cancer.',
+        ctaText: 'Read about living with PROC',
+        ctaLink: '#'
+    },
+    {
+        id:3,
+        icon: resources,
+        title: 'Resource library',
+        desc: 'Explore patient advocacy groups, see frequently asked questions, and download materials for support.',
+        ctaText: 'Find resources',
+        ctaLink: '#'
+    },
+    {
+        id:4,
+        icon: newsletter,
+        title: 'The Luminary newsletter',
+        desc: 'Sign up for more information about platinum-resistant ovarian cancer.',
+        ctaText: 'Subscribe',
+        ctaLink: '#'
+    },
+
 ]
