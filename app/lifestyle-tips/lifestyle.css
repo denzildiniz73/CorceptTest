@@ -68,3 +68,12 @@
     }
   }
 }
+
+
+.platinum-resistant {
+  @media (max-width: 767px) {
+    .platinum-resistant-description {
+      width: 100% !important;
+    }
+  }
+}
