@@ -80,4 +80,25 @@ background-repeat: no-repeat;
 background-size: cover;
 }
 
+.section-padding {
+  padding: 0px 0px;
+}
 
+@media (max-width: 1123px) {
+  .section-padding {
+    padding: 0px 57px;
+  }
+}
+
+@media (max-width: 767px) {
+  .section-padding {
+    padding: 0px 12px;
+  }
+}
+
+@media (max-width: 1193px) {
+  .title-with-description-container {
+    flex-direction: column;
+    gap: 48px;
+  }
+}

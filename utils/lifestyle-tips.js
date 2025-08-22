@@ -4,13 +4,13 @@ export const lifestyleTips = {
   subtitle:
     "Platinum resistance is a common experience for many women with ovarian cancer",
   description: <>
-    <span className="mb-[23px] inline-block">
+    <span className="mb-[16px] inline-block">
     Oncologists and care teams are intimately familiar and highly skilled in dealing with the challenges of platinum-resistant ovarian cancer. Your care team is there to provide guidance and support.
     </span>
-    <span className="mb-[23px] inline-block">
-    Connecting with patient advocacy organizations, as well as other people with platinum-resistant ovarian cancer and their caregivers, can help create a strong support system beyond your immediate family and friends. <strong>Hearing the perspectives of others can have a significant impact on your future outlook.</strong>
+    <span className="inline-block">
+    Connecting with patient advocacy organizations, as <br className="hidden lg:block"/>well as other people with platinum-resistant ovarian cancer and their caregivers, can help create a strong support system beyond your immediate family and friends. <strong className="text-[#231D06] font-mundial font-bold leading-[150%] tracking-[0.6px] text-xl">Hearing the perspectives of others can have a significant impact on your future outlook.</strong>
     </span>
-  </>
+  </> 
 }
 
 export const yourMindset = {
