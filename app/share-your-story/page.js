@@ -248,7 +248,7 @@ export default function ShareYourStoryPage() {
                 stroke="#C25968"
                 strokeWidth="2"
                 strokeLinecap="round"
-              />
+              /> 
             </svg>
           </button>
         </div>
